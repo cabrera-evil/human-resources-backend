@@ -1,5 +1,15 @@
-var dotenv = require('dotenv');
-dotenv.config();
+var debug = require('debug')('human-resources-backend:database');
 
-const db = require('./database.config.js');
-db.connectToDatabase()
+require('./enviroment.config');
+const { connectToMongoDB } = require('./database.config');
+
+const ApiConfig = async () => {
+    try {
+        await connectToMongoDB();
+        debug('Successfully connected to database!');
+    } catch (err) {
+        debug(`Error connecting to database: ${err}`);
+    }
+}
+
+module.exports = ApiConfig;

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "dev": "DEBUG=human-resources-backend:* nodemon ./bin/www",
     "prod": "pm2 start"
   },
   "dependencies": {
@@ -12,6 +12,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.3.1",
     "express": "~4.16.1",
+    "express-validator": "^7.0.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "mongodb": "^6.2.0",
