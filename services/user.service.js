@@ -8,7 +8,7 @@ const createUser = async (user) => {
         const collection = db.collection('users');
 
         // Validate if the user already exists
-        const existingUser = await collection.findOne({ name: user.email });
+        const existingUser = await collection.findOne({ email: user.email });
         if (existingUser) {
             throw new Error('USER_ALREADY_EXISTS');
         }

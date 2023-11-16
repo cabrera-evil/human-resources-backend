@@ -8,9 +8,11 @@ router.post(
     '/',
     [
         // TODO: Add validation for JWT
-        check("name", "Name is required").not().isEmpty(),
-        check("email", "Email is required").not().isEmpty(),
-        check("password", "Password is required").not().isEmpty(),
+        check("name", "Name is required").not().isEmpty().isString(),
+        check("email", "Email is required").not().isEmpty().isEmail(),
+        check("role", "Role is required").not().isEmpty().isMongoId(),
+        check("department", "Department is required").not().isEmpty().isMongoId(),
+        check("password", "Password is required").not().isEmpty().isStrongPassword(),
         validateRequest,
     ],
     createUser
@@ -30,9 +32,11 @@ router.put(
     [
         // TODO: Add validation for JWT
         check("id", "Id is required").not().isEmpty().isMongoId(),
-        check("name", "Name is required").not().isEmpty(),
-        check("email", "Email is required").not().isEmpty(),
-        check("password", "Password is required").not().isEmpty(),
+        check("name", "Name is required").not().isEmpty().isString(),
+        check("email", "Email is required").not().isEmpty().isEmail(),
+        check("password", "Password is required").not().isEmpty().isStrongPassword(),
+        check("role", "Role is required").not().isEmpty().isMongoId(),
+        check("department", "Department is required").not().isEmpty().isMongoId(),
         validateRequest,
     ],
     updateUser

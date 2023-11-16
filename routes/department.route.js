@@ -28,7 +28,7 @@ router.put(
     [
         // TODO: Add validation for JWT
         check("id", "Id is required").not().isEmpty().isMongoId(),
-        check("name", "Name is required").not().isEmpty(),
+        check("name", "Name is required").not().isEmpty().isString(),
         validateRequest,
     ],
     updateDepartment
