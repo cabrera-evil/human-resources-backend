@@ -11,6 +11,7 @@ ApiConfig();
 var indexRouter = require('./routes/index.route');
 var usersRouter = require('./routes/users.route');
 var departmentRouter = require('./routes/department.route');
+var roleRouter = require('./routes/role.route');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/departments', departmentRouter);
+app.use('/roles', roleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
