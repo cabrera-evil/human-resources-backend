@@ -15,7 +15,7 @@ const createUser = async (req, res) => {
 // Retrieve and return all users from the database.
 const getUsers = async (req, res) => {
     try {
-        const user = await userService.getUsers();
+        const users = await userService.getUsers();
         res.status(200).json({ message: 'USERS_FETCHED', data: users });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -48,7 +48,7 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
-    createUser: createUser,
+    createUser,
     getUsers,
     updateUser,
     deleteUser
