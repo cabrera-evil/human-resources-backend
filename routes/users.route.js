@@ -3,11 +3,14 @@ var router = express.Router();
 const { check } = require("express-validator");
 const validateRequest = require("../middlewares/validateRequest.middleware");
 const { createUser, getUsers, updateUser, deleteUser } = require("../controllers/user.controller");
+const authenticateToken = require("../middlewares/authenticateToken.middleware");
+const validateRole = require('../middlewares/validateRole.middleware');
 
 router.post(
     '/',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         check("name", "Name is required").not().isEmpty().isString(),
         check("email", "Email is required").not().isEmpty().isEmail(),
         check("role", "Role is required").not().isEmpty().isMongoId(),
@@ -21,22 +24,24 @@ router.post(
 router.get(
     '/',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         validateRequest,
     ]
     , getUsers
 );
 
-router.put(
+router.patch(
     '/:id',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin", "Employee"]),
         check("id", "Id is required").not().isEmpty().isMongoId(),
-        check("name", "Name is required").not().isEmpty().isString(),
-        check("email", "Email is required").not().isEmpty().isEmail(),
-        check("password", "Password is required").not().isEmpty().isStrongPassword(),
-        check("role", "Role is required").not().isEmpty().isMongoId(),
-        check("department", "Department is required").not().isEmpty().isMongoId(),
+        check("name", "Name is required").optional().isString(),
+        check("email", "Email is required").optional().isEmail(),
+        check("password", "Password is required").optional().isStrongPassword(),
+        check("role", "Role is required").optional().isMongoId(),
+        check("department", "Department is required").optional().isMongoId(),
         validateRequest,
     ],
     updateUser
@@ -45,7 +50,8 @@ router.put(
 router.delete(
     '/:id',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         check("id", "Id is required").not().isEmpty().isMongoId(),
         validateRequest,
     ],

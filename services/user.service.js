@@ -56,7 +56,9 @@ const updateUser = async (id, user) => {
         }
 
         // Encrypt the password
-        user.password = await hashPassword(user.password);
+        if(user.password) {
+            user.password = await hashPassword(user.password);
+        }
 
         // Check if the user exists before updating
         const updatedUser = await collection.findOneAndUpdate(

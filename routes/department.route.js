@@ -3,11 +3,14 @@ var router = express.Router();
 const { check } = require("express-validator");
 const validateRequest = require("../middlewares/validateRequest.middleware");
 const { createDepartment, getDepartments, updateDepartment, deleteDepartment } = require("../controllers/department.controller");
+const authenticateToken = require("../middlewares/authenticateToken.middleware");
+const validateRole = require("../middlewares/validateRole.middleware");
 
 router.post(
     '/',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         check("name", "Name is required").not().isEmpty(),
         validateRequest,
     ],
@@ -17,18 +20,20 @@ router.post(
 router.get(
     '/',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         validateRequest,
     ]
     , getDepartments
 );
 
-router.put(
+router.patch(
     '/:id',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         check("id", "Id is required").not().isEmpty().isMongoId(),
-        check("name", "Name is required").not().isEmpty().isString(),
+        check("name", "Name is required").optional().isString(),
         validateRequest,
     ],
     updateDepartment
@@ -37,7 +42,8 @@ router.put(
 router.delete(
     '/:id',
     [
-        // TODO: Add validation for JWT
+        authenticateToken,
+        validateRole(["SuperAdmin", "Admin"]),
         check("id", "Id is required").not().isEmpty().isMongoId(),
         validateRequest,
     ],

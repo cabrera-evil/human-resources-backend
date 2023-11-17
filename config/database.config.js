@@ -1,23 +1,31 @@
+var debug = require('debug')('human-resources-backend:database');
 const { MongoClient } = require('mongodb');
 
 let client;
 
 const connectToMongoDB = async () => {
     try {
-        if (!client) { // Check if the client is not already connected
+        if (!client) {
             const newClient = await MongoClient.connect(process.env.MONGODB_URI);
-
-            client = newClient.db(); // Get the default database from the client
+            client = newClient.db();
         }
 
         return client;
     } catch (err) {
-        console.error('Error connecting to MongoDB:', err.message);
         throw err;
     }
 };
 
+const initializeDatabase = async () => {
+    try {
+        await connectToMongoDB();
+        debug('Successfully connected to the database!');
+    } catch (err) {
+        debug('Error connecting to the database!');
+    }
+};
+
 module.exports = {
-    connectToMongoDB,
+    initializeDatabase,
     getClient: () => client,
 };

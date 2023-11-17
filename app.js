@@ -4,16 +4,26 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Load environment variables
+require('dotenv').config();
+
 // Setup server configuration
-var ApiConfig = require('./config/main.config');
-ApiConfig();
+const { initializeDatabase } = require('./config/database.config');
+initializeDatabase();
+
+// Setup passport configuration
+const passport = require('./config/passport.config');
 
 var indexRouter = require('./routes/index.route');
 var usersRouter = require('./routes/users.route');
 var departmentRouter = require('./routes/department.route');
 var roleRouter = require('./routes/role.route');
+var authRouter = require('./routes/auth.route');
 
 var app = express();
+
+// Initialize Passport
+app.use(passport.initialize());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,14 +39,15 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/departments', departmentRouter);
 app.use('/roles', roleRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
