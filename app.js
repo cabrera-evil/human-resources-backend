@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 // Load environment variables
 require('dotenv').config();
@@ -21,6 +22,9 @@ var roleRouter = require('./routes/role.route');
 var authRouter = require('./routes/auth.route');
 
 var app = express();
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Initialize Passport
 app.use(passport.initialize());
