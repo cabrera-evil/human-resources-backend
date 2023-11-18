@@ -1,17 +1,5 @@
 const userService = require('../services/user.service');
 
-// Create and Save a new User
-const createUser = async (req, res) => {
-    try {
-        const { body } = req;
-
-        const newUser = await userService.createUser(body);
-        res.status(200).json({ message: 'USER_CREATED', data: newUser });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
 // Retrieve and return all users from the database.
 const getUsers = async (req, res) => {
     try {
@@ -48,7 +36,6 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
-    createUser,
     getUsers,
     updateUser,
     deleteUser

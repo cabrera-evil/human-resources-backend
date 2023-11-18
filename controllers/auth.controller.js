@@ -1,5 +1,17 @@
 const authService = require('../services/auth.service');
 
+// Register a new user
+const register = async (req, res) => {
+    try {
+        const { body } = req;
+
+        const newUser = await authService.register(body);
+        res.status(200).json({ message: 'USER_CREATED', data: newUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Create login authentication
 const createLogin = async (req, res) => {
     try {
@@ -27,4 +39,5 @@ const getProfile = async (req, res) => {
 module.exports = {
     createLogin,
     getProfile,
+    register
 };

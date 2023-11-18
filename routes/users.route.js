@@ -6,21 +6,6 @@ const { createUser, getUsers, updateUser, deleteUser } = require("../controllers
 const authenticateToken = require("../middlewares/authenticateToken.middleware");
 const validateRole = require('../middlewares/validateRole.middleware');
 
-router.post(
-    '/',
-    [
-        authenticateToken,
-        validateRole(["SuperAdmin", "Admin"]),
-        check("name", "Name is required").not().isEmpty().isString(),
-        check("email", "Email is required").not().isEmpty().isEmail(),
-        check("role", "Role is required").not().isEmpty().isMongoId(),
-        check("department", "Department is required").not().isEmpty().isMongoId(),
-        check("password", "Password is required").not().isEmpty().isStrongPassword(),
-        validateRequest,
-    ],
-    createUser
-);
-
 router.get(
     '/',
     [

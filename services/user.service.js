@@ -2,28 +2,6 @@ const { getClient } = require("../config/database.config");
 const { ObjectId } = require('mongodb');
 const hashPassword = require("../helpers/hashPassword.helper");
 
-const createUser = async (user) => {
-    try {
-        const db = await getClient();
-        const collection = db.collection('users');
-
-        // Validate if the user already exists
-        const existingUser = await collection.findOne({ email: user.email });
-        if (existingUser) {
-            throw new Error('USER_ALREADY_EXISTS');
-        }
-
-        // Encrypt the password
-        user.password = await hashPassword(user.password);
-
-        const newUser = await collection.insertOne(user);
-
-        return newUser;
-    } catch (error) {
-        throw error;
-    }
-};
-
 const getUsers = async () => {
     try {
         const db = await getClient();
@@ -97,7 +75,6 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
-    createUser,
     getUsers,
     updateUser,
     deleteUser

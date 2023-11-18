@@ -2,6 +2,28 @@ const { getClient } = require("../config/database.config");
 const verifyPassword = require("../helpers/verifyPassword.helper");
 const generateAuthToken = require("../helpers/generateAuthToken.helper");
 
+const register = async (user) => {
+    try {
+        const db = await getClient();
+        const collection = db.collection('users');
+
+        // Validate if the user already exists
+        const existingUser = await collection.findOne({ email: user.email });
+        if (existingUser) {
+            throw new Error('USER_ALREADY_EXISTS');
+        }
+
+        // Encrypt the password
+        user.password = await hashPassword(user.password);
+
+        const newUser = await collection.insertOne(user);
+
+        return newUser;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const createLogin = async (user) => {
     try {
         const db = await getClient();
@@ -51,4 +73,5 @@ const getProfile = async (userId) => {
 module.exports = {
     createLogin,
     getProfile,
+    register,
 };
